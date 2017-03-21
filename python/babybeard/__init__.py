@@ -1,6 +1,6 @@
 from telepot import glance, message_identifier
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
-from skybeard.beards import BeardChatHandler, BeardDBTable, ThatsNotMineException
+from skybeard.beards import BeardChatHandler, ThatsNotMineException
 from skybeard.decorators import onerror
 from skybeard.utils import get_args
 
@@ -11,17 +11,18 @@ class Babybeard(BeardChatHandler):
 
     __commands__ = [
         # command, callback coro, help text
-        ("startbabyfeed", 'start', 'Use the first time the baby is fed to start the reminders')
+        ("startbabyfeed", 'start',
+         'Use the first time the baby is fed to start the reminders')
     ]
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.router.routing_table['_bfeed'] = self.on__remind
 
     @onerror
     async def new_reminder(self, msg):
-        event = self.scheduler.make_event_data('_chat',dict(name_msg = msg))
-        time = 2.5*60*60 # put in a config in future
+        event = self.scheduler.make_event_data('_chat', dict(name_msg=msg))
+        time = 2.5 * 60 * 60  # put in a config in future
         self.scheduler.event_later(time, ('_bfeed', event))
 
     @onerror
@@ -59,12 +60,6 @@ class Babybeard(BeardChatHandler):
 
         if data == msg['from']['id']:
             await self.new_reminder(msg)
-        
+
         await self.sender.sendMessage(
                 "Noted! Will send the next reminder in 2.5 hours")
-
-
-    
-
-    
-
