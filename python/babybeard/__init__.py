@@ -14,7 +14,7 @@ class Babybeard(BeardChatHandler):
     __commands__ = [
         ("startbabyfeed", 'start',
          'Use the first time the baby is fed to start the reminders'),
-        ("dirtynappy", "dirty_nappy", "Register a change of nappy"),
+        ("changenappy", "change_nappy", "Register a change of nappy"),
     ]
 
     def __init__(self, *args, **kwargs):
@@ -23,7 +23,7 @@ class Babybeard(BeardChatHandler):
         self.table = BeardInstanceDBTable(self, 'dirty_nappies')
 
     @onerror
-    async def dirty_nappy(self, msg):
+    async def change_nappy(self, msg):
         inline_keyboard = InlineKeyboardMarkup(
             inline_keyboard=[[
                 InlineKeyboardButton(
